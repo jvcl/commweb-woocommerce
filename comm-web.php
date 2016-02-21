@@ -49,8 +49,10 @@ function flyonet_comm_web() {
             add_action( 'woocommerce_update_options_payment_gateways_' .
                 $this->id, array( $this, 'process_admin_options' ) );
 
+
+            $secure_hash = $this->secret_hash;
             include_once( 'includes/WC_gateway_comm_web_response_handler.php' );
-            new WC_gateway_comm_web_response_handler();
+            new WC_gateway_comm_web_response_handler($secure_hash);
         }
         public function init_form_fields() {
             $this->form_fields = include( 'includes/settings_comm_web.php' );

@@ -65,7 +65,7 @@ class WC_Gateway_CommWeb_Request {
             'vpc_AccessCode' => $access_code,
             'vpc_MerchTxnRef' => $vpc_MerchTxnRef,
             'vpc_Merchant' => $merchantID,
-            'vpc_OrderInfo' => 'woo_order_'.$orderID,
+            'vpc_OrderInfo' => 'woo-order_'.$orderID,
             'vpc_Amount' => $orderTotal,
             'vpc_ReturnURL' => $vpc_ReturnURL,
             'vpc_Locale' => 'en'

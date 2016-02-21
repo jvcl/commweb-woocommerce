@@ -42,9 +42,9 @@ return array(
         'description' => __( 'Enter the Access Code provided by the bank.', 'comm_web' ),
     ),
     'secret_hash' => array(
-        'title'     => __( 'Secret Hash', 'comm_web' ),
+        'title'     => __( 'Secret Hash Secret', 'comm_web' ),
         'type'      => 'text',
-        'description' => __( 'Enter the Secret Hash provided by the bank.', 'comm_web' ),
+        'description' => __( 'Enter the Secret Hash Secret provided by the bank.', 'comm_web' ),
     ),
     'environment' => array(
         'title'     => __( 'Test Mode', 'comm_web' ),

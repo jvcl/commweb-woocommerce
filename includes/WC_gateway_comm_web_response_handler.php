@@ -6,8 +6,15 @@
  * Date: 21/02/2016
  * Time: 2:41 PM
  */
+
 class WC_gateway_comm_web_response_handler {
-    function __construct() {
+
+    protected $secure_hash;
+
+    function __construct($secure_hash) {
+
+        $this->$secure_hash = $secure_hash;
+
         add_action( 'woocommerce_api_wc_gateway_comm_web', array( $this, 'check_response' ) );
         add_action( 'valid-comm-web-response', array( $this, 'valid_response' ) );
     }
