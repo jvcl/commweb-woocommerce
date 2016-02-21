@@ -49,8 +49,8 @@ function flyonet_comm_web() {
             add_action( 'woocommerce_update_options_payment_gateways_' .
                 $this->id, array( $this, 'process_admin_options' ) );
 
-            include_once( 'includes/class-wc-gateway-paypal-ipn-handler.php' );
-            new WC_Gateway_Paypal_IPN_Handler( $this->testmode, $this->receiver_email );
+            include_once( 'includes/WC_gateway_comm_web_response_handler.php' );
+            new WC_gateway_comm_web_response_handler();
         }
         public function init_form_fields() {
             $this->form_fields = include( 'includes/settings_comm_web.php' );

@@ -27,7 +27,7 @@ class WC_Gateway_CommWeb_Request {
     function __construct($gateway) {
         $this->gateway    = $gateway;
         $this->notify_url = WC()->api_request_url( 'WC_Gateway_Comm_Web' );
-        error_log("ntofy " . $this->notify_url);
+        error_log("notify " . $this->notify_url);
     }
 
     /**
