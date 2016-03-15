@@ -45,7 +45,7 @@ return array(
         'title'     => __( 'Secret Hash Secret', 'comm_web' ),
         'type'      => 'text',
         'description' => __( 'Enter the Secret Hash Secret provided by the bank.', 'comm_web' ),
-        'default' => __( 'ccdff', 'comm_web' ),
+        'default' => __( '', 'comm_web' ),
     ),
     'environment' => array(
         'title'     => __( 'Test Mode', 'comm_web' ),
