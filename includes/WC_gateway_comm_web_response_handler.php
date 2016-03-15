@@ -65,6 +65,7 @@ class WC_gateway_comm_web_response_handler extends WC_gateway_comm_web_response{
         wp_die( 'Payment Request Failure', 'Comm Web Request', array( 'response' => 500 ) );
     }
     public function valid_response($response) {
-
+        $raw_order = $response['vpc_OrderInfo'];
+        $order = $this->getOrder($raw_order);
     }
 }
