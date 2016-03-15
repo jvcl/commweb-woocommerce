@@ -53,7 +53,7 @@ function flyonet_comm_web() {
             $secure_hash = $this->secret_hash;
             // Add call back handler
             include_once( 'includes/WC_gateway_comm_web_response_handler.php' );
-            new WC_gateway_comm_web_response_handler($secure_hash);
+            new WC_gateway_comm_web_response_handler($secure_hash, $this);
         }
         public function init_form_fields() {
             $this->form_fields = include( 'includes/settings_comm_web.php' );
