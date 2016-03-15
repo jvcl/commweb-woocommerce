@@ -51,6 +51,7 @@ function flyonet_comm_web() {
 
 
             $secure_hash = $this->secret_hash;
+            // Add call back handler
             include_once( 'includes/WC_gateway_comm_web_response_handler.php' );
             new WC_gateway_comm_web_response_handler($secure_hash);
         }
