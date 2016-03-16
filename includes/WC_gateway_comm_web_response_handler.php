@@ -17,10 +17,12 @@ class WC_gateway_comm_web_response_handler {
     protected $gateway;
 
     protected $TAG = 'COMM_WEB: ';
+    protected $log_mode;
 
     function __construct($gateway) {
         $this->gateway    = $gateway;
         $this->SECURE_SECRET = $gateway->secret_hash;
+        $this->log_mode = ( $gateway->logs == "yes" ) ? true : false;
         add_action( 'woocommerce_api_wc_gateway_comm_web', array( $this, 'check_response' ) );
         add_action( 'valid-comm-web-response', array( $this, 'valid_response' ) );
     }
@@ -35,7 +37,7 @@ class WC_gateway_comm_web_response_handler {
             && $_GET["vpc_TxnResponseCode"] != "No Value Returned") {
 
             $md5HashData = $this->SECURE_SECRET;
-            error_log("SECURE SECRET = " . $this->SECURE_SECRET);
+            //if ($this->log_mode) { error_log($this->TAG . "SECURE SECRET = " . $this->SECURE_SECRET); }
 
             // sort all the incoming vpc response fields and leave out any with no value
             foreach($_GET as $key => $value) {
@@ -48,14 +50,14 @@ class WC_gateway_comm_web_response_handler {
             // In production, you would work out your own way of presenting the result.
             // The hash check is all about detecting if the data has changed in transit.
             if (strtoupper($vpc_Txn_Secure_Hash) == strtoupper(md5($md5HashData))) {
-                error_log($this->TAG . "VALID HASH");
+                if ( $this->log_mode ) { error_log($this->TAG . "VALID HASH"); }
                 do_action( 'valid-comm-web-response', $_GET);
                 exit;
             } else {
-                error_log("$this->TAG .NOT VALID HASH");
+                if ( $this->log_mode ) { error_log($this->TAG . "NOT VALID HASH"); }
             }
         } else {
-            error_log($this->TAG . "HASH NOT CALCULATED (FIELD EMPTY?)");
+            if ( $this->log_mode ) { error_log($this->TAG . "HASH NOT CALCULATED (FIELD EMPTY?)"); }
         }
         wp_die( 'Payment Request Failure', 'Comm Web Request', array( 'response' => 500 ) );
     }
@@ -63,10 +65,11 @@ class WC_gateway_comm_web_response_handler {
         global $woocommerce;
         $raw_order = $response['vpc_OrderInfo'];
         $order = $this->getOrder($raw_order);
-        error_log($this->TAG . 'Order Found: ' . $order->id);
+        if ($this->log_mode ) { error_log($this->TAG . 'Order Found: ' . $order->id); }
 
         $responseCode = $response['vpc_TxnResponseCode'];
         if ($responseCode == '0' && $response['vpc_Amount'] == $order->get_total() * 100) {
+            if ($this->log_mode ) { error_log($this->TAG . 'Payment Completed'); }
             $order->add_order_note( 'CommWeb TransactionNo: '. $response['vpc_TransactionNo']);
             $order->add_order_note( 'Payment completed' );
             $order->payment_complete();
@@ -76,6 +79,7 @@ class WC_gateway_comm_web_response_handler {
             exit;
         }else{
             // Transaction was not successful
+            if ($this->log_mode ) { error_log($this->TAG . 'Transaction was not successful'); }
             // Add notice to the cart
             wc_add_notice( 'Sorry your payment can not be completed. Please try again. '.$this->getResponseDescription($responseCode), 'error' );
             // Add note to the order for your reference
@@ -88,11 +92,11 @@ class WC_gateway_comm_web_response_handler {
     function getOrder($raw_order){
         $order_id = explode('_', $raw_order)[1];
         if ( empty( $order_id) ) {
-            error_log($this->TAG . "OrderID in response is empty");
+            if ($this->log_mode ) { error_log($this->TAG . "OrderID in response is empty"); }
             return;
         }
         if ( ! $order = wc_get_order( $order_id ) ) {
-            error_log($this->TAG . "Order can not be retrived from WooCoomerce. OrderID: ". $order_id);
+            if ($this->log_mode ) { error_log($this->TAG . "Order can not be retrieved from WooCoomerce. OrderID: ". $order_id); }
             return;
         }
         return $order;

@@ -28,7 +28,7 @@ return array(
         'title'		=> __( 'Description', 'comm_web' ),
         'type'		=> 'textarea',
         'desc_tip'	=> __( 'Payment description the customer will see during the checkout process.', 'comm_web' ),
-        'default'	=> __( 'Pay securely using your credit card.', 'comm_web' ),
+        'default'	=> __( 'Pay securely using your credit card. Cards accepted: Visa, Mastercard & MasterPass', 'comm_web' ),
         'css'		=> 'max-width:350px;'
     ),
     'merchant_id' => array(
@@ -37,7 +37,7 @@ return array(
         'description' => __( 'Enter the Merchant ID provided by the bank.', 'comm_web' ),
     ),
     'access_code' => array(
-        'title'     => __( 'Acess Code', 'comm_web' ),
+        'title'     => __( 'Access Code', 'comm_web' ),
         'type'      => 'text',
         'description' => __( 'Enter the Access Code provided by the bank.', 'comm_web' ),
     ),
@@ -46,14 +46,6 @@ return array(
         'type'      => 'text',
         'description' => __( 'Enter the Secret Hash Secret provided by the bank.', 'comm_web' ),
         'default' => __( '', 'comm_web' ),
-    ),
-    'environment' => array(
-        'title'     => __( 'Test Mode', 'comm_web' ),
-        'label'     => __( 'Enable Test Mode', 'comm_web' ),
-        'type'      => 'checkbox',
-        'description' => __( 'Place the payment gateway in test mode.', 'comm_web' ),
-        'desc_tip'	=> __( 'All transactions will be in test mode.', 'comm_web' ),
-        'default'   => 'no',
     ),
     'logs' => array(
         'title' => __( 'Enable Logs', 'comm_web' ),

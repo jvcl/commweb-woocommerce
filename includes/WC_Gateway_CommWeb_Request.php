@@ -19,7 +19,8 @@ class WC_Gateway_CommWeb_Request {
      * @var string
      */
     protected $notify_url;
-
+    protected $log_mode;
+    protected $TAG = 'COMM_WEB: ';
     /**
      * Constructor.
      * @param WC_Gateway_Comm_Web $gateway
@@ -27,7 +28,7 @@ class WC_Gateway_CommWeb_Request {
     function __construct($gateway) {
         $this->gateway    = $gateway;
         $this->notify_url = WC()->api_request_url( 'WC_Gateway_Comm_Web' );
-        error_log("notify " . $this->notify_url);
+        $this->log_mode = ( $gateway->logs == "yes" ) ? true : false;
     }
 
     /**
@@ -40,17 +41,11 @@ class WC_Gateway_CommWeb_Request {
         $orderTotal = $order->get_total() * 100;
         $orderID = $order->id;
 
-        // Create a unique id for the transaction
-//        $xmlID = md5(uniqid(rand(), true));
-
         // Get admin options
-        $test_mode = ( $this->gateway->environment == "yes" ) ? true : false;
         $merchantID = $this->gateway->merchant_id;
         $access_code = $this->gateway->access_code;
         $md5HashData = $this->gateway->secret_hash;
         $vpc_ReturnURL = $this->notify_url;
-
-        $log_mode = ( $this->gateway->logs == "yes" ) ? true : false;
 
         // Set request URL
         $vpcURL = 'https://migs.mastercard.com.au/vpcpay' . '?';
