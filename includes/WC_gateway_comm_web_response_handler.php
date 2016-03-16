@@ -11,19 +11,16 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-include_once( 'WC_gateway_comm_web_response.php' );
-
-
-class WC_gateway_comm_web_response_handler extends WC_gateway_comm_web_response{
+class WC_gateway_comm_web_response_handler {
 
     protected $SECURE_SECRET;
     protected $gateway;
 
     protected $TAG = 'COMM_WEB: ';
 
-    function __construct($SECURE_SECRET, $gateway) {
+    function __construct($gateway) {
         $this->gateway    = $gateway;
-        $this->SECURE_SECRET = $SECURE_SECRET;
+        $this->SECURE_SECRET = $gateway->secret_hash;
         add_action( 'woocommerce_api_wc_gateway_comm_web', array( $this, 'check_response' ) );
         add_action( 'valid-comm-web-response', array( $this, 'valid_response' ) );
     }
@@ -33,9 +30,6 @@ class WC_gateway_comm_web_response_handler extends WC_gateway_comm_web_response{
         // do not want to include this field in the hash calculation
         $vpc_Txn_Secure_Hash = $_GET["vpc_SecureHash"];
         unset($_GET["vpc_SecureHash"]);
-
-        // set a flag to indicate if hash has been validated
-        $errorExists = false;
 
         if (strlen($this->SECURE_SECRET) > 0 && $_GET["vpc_TxnResponseCode"] != "7"
             && $_GET["vpc_TxnResponseCode"] != "No Value Returned") {
@@ -66,27 +60,44 @@ class WC_gateway_comm_web_response_handler extends WC_gateway_comm_web_response{
         wp_die( 'Payment Request Failure', 'Comm Web Request', array( 'response' => 500 ) );
     }
     public function valid_response($response) {
+        global $woocommerce;
         $raw_order = $response['vpc_OrderInfo'];
         $order = $this->getOrder($raw_order);
         error_log($this->TAG . 'Order Found: ' . $order->id);
 
         $responseCode = $response['vpc_TxnResponseCode'];
         if ($responseCode == '0' && $response['vpc_Amount'] == $order->get_total() * 100) {
-            $order->add_order_note( 'Completed' );
+            $order->add_order_note( 'CommWeb TransactionNo: '. $response['vpc_TransactionNo']);
+            $order->add_order_note( 'Payment completed' );
             $order->payment_complete();
+            // Empty the cart (Very important step)
+            $woocommerce->cart->empty_cart();
             wp_redirect($this->gateway->get_return_url( $order ) );
             exit;
         }else{
-            // Transaction was not succesful
+            // Transaction was not successful
             // Add notice to the cart
-            // TODO: Add more details to error
-            wc_add_notice( $this->getResponseDescription($responseCode), 'error' );
+            wc_add_notice( 'Sorry your payment can not be completed. Please try again. '.$this->getResponseDescription($responseCode), 'error' );
             // Add note to the order for your reference
-            $order->add_order_note( 'Error: '. $this->getResponseDescription($responseCode) );
+            $order->add_order_note( 'Payment not completed. CommWeb response: '. $this->getResponseDescription($responseCode) );
             wp_redirect(wc_get_checkout_url());
             exit;
         }
     }
+
+    function getOrder($raw_order){
+        $order_id = explode('_', $raw_order)[1];
+        if ( empty( $order_id) ) {
+            error_log($this->TAG . "OrderID in response is empty");
+            return;
+        }
+        if ( ! $order = wc_get_order( $order_id ) ) {
+            error_log($this->TAG . "Order can not be retrived from WooCoomerce. OrderID: ". $order_id);
+            return;
+        }
+        return $order;
+    }
+
     function getResponseDescription($responseCode) {
 
         switch ($responseCode) {

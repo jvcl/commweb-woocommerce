@@ -1,13 +1,14 @@
 <?php
 
 /*
-Plugin Name: CommWeb
-Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
-Description: A brief description of the Plugin.
+Plugin Name: WooCommerce CommWeb Virtual Payment
+Plugin URI: http://flyonet.com
+Description: WooCommerce CommWeb Virtual Payment
 Version: 1.0
-Author: jorge
-Author URI: http://URI_Of_The_Plugin_Author
-License: A "Slug" license name e.g. GPL2
+Author: Jorge Valdivia
+Author URI: http://flyonet.com
+License: GPL2
+
 */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,7 +54,7 @@ function flyonet_comm_web() {
             $secure_hash = $this->secret_hash;
             // Add call back handler
             include_once( 'includes/WC_gateway_comm_web_response_handler.php' );
-            new WC_gateway_comm_web_response_handler($secure_hash, $this);
+            new WC_gateway_comm_web_response_handler($this);
         }
         public function init_form_fields() {
             $this->form_fields = include( 'includes/settings_comm_web.php' );
