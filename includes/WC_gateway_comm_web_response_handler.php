@@ -80,6 +80,7 @@ class WC_gateway_comm_web_response_handler {
         }else{
             // Transaction was not successful
             if ($this->log_mode ) { error_log($this->TAG . 'Transaction was not successful'); }
+            if ($this->log_mode ) { error_log($this->TAG . 'Bank Response: '. $this->getResponseDescription($responseCode)); }
             // Add notice to the cart
             wc_add_notice( 'Sorry your payment can not be completed. Please try again. '.$this->getResponseDescription($responseCode), 'error' );
             // Add note to the order for your reference
