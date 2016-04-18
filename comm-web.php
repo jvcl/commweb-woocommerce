@@ -5,9 +5,31 @@ Plugin Name: WooCommerce CommWeb Virtual Payment
 Plugin URI: http://flyonet.com
 Description: WooCommerce CommWeb Virtual Payment
 Version: 1.0
-Author: Flyonet
+Author: Jorge Valdivia
 Author URI: http://flyonet.com
-License: GPL2
+License: GNU GPLv3
+
+*/
+
+
+/*
+
+Copyright 2016 Jorge Valdivia
+
+This file is part of Comm-web.
+
+Comm-web is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Comm-web is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Comm-web.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
