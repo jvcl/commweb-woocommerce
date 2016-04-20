@@ -37,6 +37,7 @@ class WC_Gateway_CommWeb_Request {
     protected $notify_url;
     protected $log_mode;
     protected $TAG = 'COMM_WEB: ';
+
     /**
      * Constructor.
      * @param WC_Gateway_Comm_Web $gateway
@@ -66,8 +67,7 @@ class WC_Gateway_CommWeb_Request {
         // Set request URL
         $vpcURL = 'https://migs.mastercard.com.au/vpcpay' . '?';
 
-        // TODO add the values for
-        $vpc_MerchTxnRef = 'test';
+        $vpc_MerchTxnRef = 'woo-payment';
 
 
         $data = array(

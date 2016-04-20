@@ -39,8 +39,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function flyonet_comm_web() {
 
-    //	TODO: Check if WC_Payment_Gateway is available
-
     class WC_Gateway_Comm_Web extends WC_Payment_Gateway {
 
         protected $TAG = 'COMM_WEB: ';
