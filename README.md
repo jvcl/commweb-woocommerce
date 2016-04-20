@@ -22,3 +22,7 @@ WordPress Admin dashboard.
 * Enter the Access code and Secure Hash Secret provided by the bank.
 * Select test mode or production.
 * Done
+
+## Licence
+
+GNU GPLv3
