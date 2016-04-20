@@ -20,5 +20,5 @@ Also make sure you update Wordpress and WooCoommerce
 and upload the files to the wp-content/plugins directory. Also you can install the plugin by uploading the zip file in the
 WordPress Admin dashboard.
 * Enter the Access code and Secure Hash Secret provided by the bank.
-* Select if payment are in test mode or production.
+* Select test mode or production.
 * Done
