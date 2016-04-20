@@ -1,4 +1,4 @@
-# CommonWealth Bank CommWeb Plugin for WooCommerce
+# CommWeb Plugin for WooCommerce
 
 This plugin will allow your WooCommerce store to process credit card payments using the CommonWealth payment gateway (CommWeb).
 
