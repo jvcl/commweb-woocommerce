@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: WooCommerce CommWeb Virtual Payment
-Plugin URI: http://flyonet.com
+Plugin URI: http://wooplugins.com.au
 Description: WooCommerce CommWeb Virtual Payment
 Version: 1.0
-Author: Jorge Valdivia
-Author URI: http://flyonet.com
+Author: WooPlugins - Jorge Valdivia
+Author URI: http://wooplugins.com.au
 License: GNU GPLv3
 
 */
@@ -16,14 +16,14 @@ License: GNU GPLv3
 
 Copyright 2016 Jorge Valdivia
 
-This file is part of Comm-web.
+This file is part of Comm-web plugin.
 
-Comm-web is free software: you can redistribute it and/or modify
+Comm-web plugin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Comm-web is distributed in the hope that it will be useful,
+Comm-web plugin is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
@@ -61,7 +61,7 @@ function flyonet_comm_web() {
             $this->has_fields = false;
             // This basically defines your settings which are then loaded with init_settings()
             $this->init_form_fields();
-            // After init_settings() is called, you can get the settings and load them into variables, e.g:
+            // After init_settings() is called, you can get the settings and load them into variables
             $this->init_settings();
 
             // Turn these settings into variables we can use
