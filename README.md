@@ -2,16 +2,18 @@
 
 This plugin will allow your WooCommerce store to process credit card payments using the CommonWealth payment gateway (CommWeb).
 
-## Features:
+## Features
 
 * The plugin uses the Server Hosted Payment (Clients pay in the CommonWealth bank secure page)
 * No PCI compliance requiered.
 * Test environment supported.
+* WordPress 4.4+ and WooCommerce 2.5+
 
 ## Optional
 
 Even though PCI compliance is not requiered is highly recommended to use a SSL certificate in your online store.
 Also make sure you update Wordpress and WooCoommerce
+
 
 
 ## Installation
