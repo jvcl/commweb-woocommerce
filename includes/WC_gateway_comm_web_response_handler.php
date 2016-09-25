@@ -82,7 +82,12 @@ class WC_gateway_comm_web_response_handler {
         if ($this->log_mode ) { error_log($this->TAG . 'Order Found: ' . $order->id); }
 
         $responseCode = $response['vpc_TxnResponseCode'];
-        if ($responseCode == '0' && $response['vpc_Amount'] == $order->get_total() * 100) {
+        
+        if ($this->log_mode ) { error_log($this->TAG . 'Response Code: ' . $responseCode); }
+        if ($this->log_mode ) { error_log($this->TAG . 'Response Amount: ' . $response['vpc_Amount']); }
+        if ($this->log_mode ) { error_log($this->TAG . 'Order Amount: ' . $order->get_total() * 100); }
+                 
+        if ($responseCode == '0') {
             if ($this->log_mode ) { error_log($this->TAG . 'Payment Completed'); }
             $order->add_order_note( 'CommWeb TransactionNo: '. $response['vpc_TransactionNo']);
             $order->add_order_note( 'Payment completed' );
