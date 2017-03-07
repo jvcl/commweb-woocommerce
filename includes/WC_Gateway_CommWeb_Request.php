@@ -90,7 +90,7 @@ class WC_Gateway_CommWeb_Request {
         $secret_hash_value = '';
         foreach($data as $key => $value) {
 
-            // create the md5 input and URL leaving out any fields that have no value
+            // create the input for the SHA256 and URL leaving out any fields that have no value
             if (strlen($value) > 0) {
 
                 // this ensures the first paramter of the URL is preceded by the '?' char
