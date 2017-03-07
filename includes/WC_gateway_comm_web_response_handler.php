@@ -50,20 +50,23 @@ class WC_gateway_comm_web_response_handler {
         if (strlen($this->SECURE_SECRET) > 0 && $_GET["vpc_TxnResponseCode"] != "7"
             && $_GET["vpc_TxnResponseCode"] != "No Value Returned") {
 
-            $md5HashData = $this->SECURE_SECRET;
-            //if ($this->log_mode) { error_log($this->TAG . "SECURE SECRET = " . $this->SECURE_SECRET); }
-
             // sort all the incoming vpc response fields and leave out any with no value
+            $appendAmp = 0;
+            $secret_hash_value = '';
             foreach($_GET as $key => $value) {
-                if ($key != "vpc_Secure_Hash" or strlen($value) > 0) {
-                    $md5HashData .= $value;
+                if (($key!="vpc_SecureHash") && ($key != "vpc_SecureHashType") && ((substr($key, 0,4)=="vpc_") || (substr($key,0,5) =="user_"))) {
+                    // this ensures the first paramter of the URL is preceded by the '?' char
+                    if ($appendAmp == 0) {
+                        $secret_hash_value .= $key . '=' . $value;
+                        $appendAmp = 1;
+                    } else {
+                        $secret_hash_value .= '&' . $key . "=" . $value;
+                    }
                 }
             }
-            // Validate the Secure Hash (remember MD5 hashes are not case sensitive)
-            // This is just one way of displaying the result of checking the hash.
-            // In production, you would work out your own way of presenting the result.
+            // Validiation using the SHA256 algorithm
             // The hash check is all about detecting if the data has changed in transit.
-            if (strtoupper($vpc_Txn_Secure_Hash) == strtoupper(md5($md5HashData))) {
+            if (strtoupper($vpc_Txn_Secure_Hash) == strtoupper(hash_hmac('SHA256', $secret_hash_value, pack('H*',$this->SECURE_SECRET)))) {
                 if ( $this->log_mode ) { error_log($this->TAG . "VALID HASH"); }
                 do_action( 'valid-comm-web-response', $_GET);
                 exit;
@@ -82,11 +85,9 @@ class WC_gateway_comm_web_response_handler {
         if ($this->log_mode ) { error_log($this->TAG . 'Order Found: ' . $order->id); }
 
         $responseCode = $response['vpc_TxnResponseCode'];
-        
         if ($this->log_mode ) { error_log($this->TAG . 'Response Code: ' . $responseCode); }
         if ($this->log_mode ) { error_log($this->TAG . 'Response Amount: ' . $response['vpc_Amount']); }
         if ($this->log_mode ) { error_log($this->TAG . 'Order Amount: ' . $order->get_total() * 100); }
-                 
         if ($responseCode == '0') {
             if ($this->log_mode ) { error_log($this->TAG . 'Payment Completed'); }
             $order->add_order_note( 'CommWeb TransactionNo: '. $response['vpc_TransactionNo']);

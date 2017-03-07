@@ -61,7 +61,7 @@ class WC_Gateway_CommWeb_Request {
         // Get admin options
         $merchantID = $this->gateway->merchant_id;
         $access_code = $this->gateway->access_code;
-        $md5HashData = $this->gateway->secret_hash;
+        $secret_hash = $this->gateway->secret_hash;
         $vpc_ReturnURL = $this->notify_url;
 
         // Set request URL
@@ -79,14 +79,15 @@ class WC_Gateway_CommWeb_Request {
             'vpc_OrderInfo' => 'woo-order_'.$orderID,
             'vpc_Amount' => $orderTotal,
             'vpc_ReturnURL' => $vpc_ReturnURL,
-            'vpc_Locale' => 'en'
+            'vpc_Currency' => 'AUD',
+            'vpc_Locale' => 'en_AU',
         );
 
         ksort ($data);
 
         // set a parameter to show the first pair in the URL
         $appendAmp = 0;
-
+        $secret_hash_value = '';
         foreach($data as $key => $value) {
 
             // create the md5 input and URL leaving out any fields that have no value
@@ -95,18 +96,20 @@ class WC_Gateway_CommWeb_Request {
                 // this ensures the first paramter of the URL is preceded by the '?' char
                 if ($appendAmp == 0) {
                     $vpcURL .= urlencode($key) . '=' . urlencode($value);
+                    $secret_hash_value .= $key . '=' . $value;
                     $appendAmp = 1;
                 } else {
                     $vpcURL .= '&' . urlencode($key) . "=" . urlencode($value);
+                    $secret_hash_value .= '&' . $key . "=" . $value;
                 }
-                $md5HashData .= $value;
             }
         }
-
         // Create the secure hash and append it to the Virtual Payment Client Data if
         // the merchant secret has been provided.
-        if (strlen($md5HashData) > 0) {
-            $vpcURL .= "&vpc_SecureHash=" . strtoupper(md5($md5HashData));
+        if (strlen($secret_hash_value) > 0) {            
+            $temp = strtoupper(hash_hmac('SHA256', $secret_hash_value, pack('H*',$this->gateway->secret_hash)));
+            $vpcURL .= "&vpc_SecureHash=" . $temp;
+            $vpcURL .= "&vpc_SecureHashType=SHA256";
         }
         return $vpcURL;
     }
