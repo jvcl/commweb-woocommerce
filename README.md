@@ -8,6 +8,7 @@ This plugin will allow your WooCommerce store to process credit card payments us
 * No PCI compliance requiered.
 * Test environment supported.
 * WordPress 4.4+ and WooCommerce 2.5+
+* Supports SHA256
 
 ## Optional
 
